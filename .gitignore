@@ -1,0 +1,8 @@
+cspgo
+/.container-*
+/.dockerfile*
+/.build-image
+*.tar
+*.tar.gz
+*.signed.tar.gz
+*.pb.go

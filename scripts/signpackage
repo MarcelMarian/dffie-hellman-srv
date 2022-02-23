@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# Sign application container packaged for Predix Edge OS
+
+set -eu
+
+DEFAULT_ARCH=amd64
+DEFAULT_APPNAME=cspgo
+DEFAULT_VERSION=1.0.0
+
+: "${ARCH:=${DEFAULT_ARCH}}"
+: "${APPNAME:=${DEFAULT_APPNAME}}"
+: "${VERSION:=${DEFAULT_VERSION}}"
+
+PACKAGEDCONTAINERNAME=${APPNAME}-${VERSION}-${ARCH}
+
+echo "Signing ${PACKAGEDCONTAINERNAME}.tar.gz"
+if [ -f ${PACKAGEDCONTAINERNAME}.tar.gz ]; then
+  # Signed package must not exist
+  rm -f ${PACKAGEDCONTAINERNAME}.signed.tar.gz
+  # Invoke the signing tools (this uses demo HSM instance at present)
+  csp-app-signing-tools/signing-util sign_app \
+    -p ${PACKAGEDCONTAINERNAME}.tar.gz \
+    -x ${PACKAGEDCONTAINERNAME}.signed.tar.gz \
+    -c csp-app-signing-tools/openssl-pkcs11client/credentials-demo -d
+  signresult=$?
+  if [ $signresult -eq 0 ]; then
+    echo "Signed packaged container : ${PACKAGEDCONTAINERNAME}.tar.gz"
+    exit 0
+  else
+    echo "Failed to sign packaged container : ${PACKAGEDCONTAINERNAME}.tar.gz"
+    exit 1
+fi
+else
+  echo "Packaged container : ${PACKAGEDCONTAINERNAME}.tar.gz not found"
+  exit 1
+fi

@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# Build a container to build a Go application inside of and
+# optionally push it to a docker registry
+
+set -eu
+
+DEFAULT_APPNAME=cspgo
+DEFAULT_REGISTRY=registry.gear.ge.com/csp
+DEFAULT_BASE_BUILD_IMAGE=golang:1.16.0-buster
+
+: "${APPNAME:=${DEFAULT_APPNAME}}"
+: "${REGISTRY:=${DEFAULT_REGISTRY}}"
+: "${BASE_BUILD_IMAGE:=${DEFAULT_BASE_BUILD_IMAGE}}"
+
+usage_and_exit() {
+    >&2 echo "usage: $(basename "$0") [--push]"
+    exit 1
+}
+
+PUSH=false
+while [ $# -gt 0 ]; do
+    key="$1"
+    case $key in
+        --push)
+            PUSH=true
+            shift # past argument
+            ;;
+        *)  # unknown option
+            usage_and_exit
+            ;;
+    esac
+done
+
+# Prepare the Dockerfile
+sed -e "s|{ARG_FROM}|$BASE_BUILD_IMAGE|g" Dockerfile.build > .dockerfile.build
+
+# Build the container image and tidy up
+BUILD_IMAGE=${APPNAME}-${BASE_BUILD_IMAGE}
+docker build -t ${REGISTRY}/${BUILD_IMAGE} --build-arg no_proxy=$no_proxy --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy -f .dockerfile.build .
+rm -f .dockerfile.build
+
+# Push to registry if required
+if [ ${PUSH} = true ]; then
+  docker push ${REGISTRY}/${BUILD_IMAGE}
+fi
+
+exit 0

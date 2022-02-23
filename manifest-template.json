@@ -1,0 +1,9 @@
+{
+    "manifest": {
+        "edgecore": [
+            {
+              "service": "cspgo"
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Cleanup
+
+set -eu
+
+DEFAULT_OS=linux
+DEFAULT_APPNAME=cspgo
+
+: "${OS:=${DEFAULT_OS}}"
+: "${APPNAME:=${DEFAULT_APPNAME}}"
+
+echo "Cleaning up"
+rm -f *.gz
+rm -f bin/${APPNAME}
+rm -f bin/${OS}_arm64/${APPNAME}
+rm -f bin/${OS}_arm/${APPNAME}
