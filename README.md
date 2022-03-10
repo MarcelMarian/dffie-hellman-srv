@@ -1,24 +1,13 @@
-# Go Application Template
-
-This is a template for a Go application. It is based heavily on the repo here : https://github.com/thockin/go-build-template (but it does not use make).
-
-The template is aligned with the best practice Go project layout, details of which can be found [here](https://github.com/golang-standards/project-layout).
-
-The example application can be used to demonstrate how to deploy a containerised application to Predix Edge OS and interact with the
-Predix Edge Broker (a standard component) using MQTT, Redis and Minio. The example also demonstrates how to communicate with the Edge
-Agent (via its REST API).
-
-**Check back often as the example application is updated continuously**.
-
-For more details of integrating the example see the information at the end of this README.
-
-The **example** application requires the following environment variables defined:
+# Go Diffie-Hellman server
+This is an example of a Diffie-Hellman key exchange algorythm. This example implements a gRPC server that exchanges the public key with a client application.  
+The client side implementation is in the diffie-hellman-cli repo.
+To run this example on a Linux distribution the following step should be followed:
+- build both the server and the client containers (see the [Building](#building) section)
+- make sure you have the docker-compose or docker stack installed on the host system
+- run
+```bash
+docker-compose up
 ```
-MQTT_HOST
-REDIS_HOST
-MINIO_HOST
-```
-The values of these environment variables is supplied via the `docker-compose-template.yml` file when deploying on Predix Edge OS.
 
 ## Signing Tools
 
