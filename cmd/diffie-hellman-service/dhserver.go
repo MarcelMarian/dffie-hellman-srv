@@ -9,7 +9,9 @@ import (
 )
 
 var DefaultConfigFile = "/config/config-adapter.json"
+var DefaultDhConfigFile = "/config/config-dh.json"
 var configDataPtr *ServerConfig
+var configDhDataPtr *DhConfig
 var seqNo int32 = 0
 var err error
 
@@ -29,9 +31,18 @@ func main() {
 	initSignalHandle()
 	fmt.Println("Diffie-Hellman gRPC server application")
 
-	// Initialize configuration
+	// Initialize gRPC configuration
 	for {
 		configDataPtr, err = initConfig(DefaultConfigFile)
+		if err == nil {
+			break
+		}
+		time.Sleep(3 * time.Second)
+	}
+
+	// Initialize diffie-hellman interface
+	for {
+		configDhDataPtr = initDhConfig(DefaultDhConfigFile)
 		if err == nil {
 			break
 		}
