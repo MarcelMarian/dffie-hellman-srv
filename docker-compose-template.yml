@@ -2,13 +2,13 @@ version: '3.1'
 
 services:
   diffie-hellman-service:
-    image: registry.gear.ge.com/csp/{ARG_NAME}:{ARG_VERSION}__{ARG_OS}_{ARG_ARCH}
+    image: {ARG_NAME}:{ARG_VERSION}__{ARG_OS}_{ARG_ARCH}
     networks:
-      - predix-edge-broker_net
+      - mqtt-broker_net
     environment:
       - REDIS_HOST=redis
-      - MQTT_HOST=predix-edge-broker
+      - MQTT_HOST=mqtt-broker
 
 networks:
-  predix-edge-broker_net:
+  mqtt-broker_net:
     external: true
