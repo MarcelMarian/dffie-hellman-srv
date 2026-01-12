@@ -1,18 +1,9 @@
 #!/bin/sh
 
 # Containerise application
-
+. scripts/environment
 set -eu
 
-DEFAULT_OS=linux
-DEFAULT_ARCH=amd64
-DEFAULT_APPNAME=diffie-hellman-service
-DEFAULT_VERSION=1.0.0
-DEFAULT_REGISTRY=registry.gear.ge.com/csp
-DEFAULT_BASE_IMAGE=scratch
-DEFAULT_APPSOURCE=bin
-DEFAULT_APPCONFIG=config
-DEFAULT_IMAGENAME=diffie-hellman-server
 
 : "${OS:=${DEFAULT_OS}}"
 : "${ARCH:=${DEFAULT_ARCH}}"
@@ -36,7 +27,7 @@ if [ -f ${APPSOURCE}/${APPNAME} ]; then
       -e "s|{ARG_FROM}|${BASEIMAGE}|g" \
       -e "s|{ARG_CFG}|${APPCONFIG}|g" \
     Dockerfile.in > dockerfile-${APPNAME}-${OS}_${ARCH}
-  docker build -t ${REGISTRY}/${IMAGENAME}:${TAG} -f dockerfile-${APPNAME}-${OS}_${ARCH} .
+  docker build -t ${IMAGENAME}:${TAG} -f dockerfile-${APPNAME}-${OS}_${ARCH} .
   rm -f dockerfile-${APPNAME}-${OS}_${ARCH}
 else
   echo "Could not find ${APPSOURCE}/${APPNAME}"

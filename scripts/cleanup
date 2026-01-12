@@ -4,8 +4,7 @@
 
 set -eu
 
-DEFAULT_OS=linux
-DEFAULT_APPNAME=diffie-hellman-service
+. scripts/environment
 
 : "${OS:=${DEFAULT_OS}}"
 : "${APPNAME:=${DEFAULT_APPNAME}}"

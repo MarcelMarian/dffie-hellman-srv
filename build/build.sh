@@ -33,7 +33,7 @@ export CGO_ENABLED=0
 export GOARCH="${ARCH}"
 export GOOS="${OS}"
 export GO111MODULE=on
-export GOFLAGS="-mod=vendor"
+export GOFLAGS="-mod=mod"
 
 # Append the location of the Go protocol compiler plugins to the PATH so that protoc can find them
 PATH=$PATH:/goprotogen/bin
