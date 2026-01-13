@@ -28,7 +28,6 @@ DEFAULT_BUILD_IMAGE=diffie-hellman-service-golang:1.16.0-buster
 docker run \
   ${TTY} \
   -v $(pwd):/src -w /src \
-  -e http_proxy=$http_proxy -e https_proxy=$http_proxy -e no_proxy=$no_proxy \
   ${REGISTRY}/${BUILD_IMAGE} build/test.sh cmd pkg
 
 exit 0

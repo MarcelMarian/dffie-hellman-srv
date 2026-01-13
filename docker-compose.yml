@@ -1,6 +1,12 @@
 version: "3"
 
 services:
+    mqtt-broker:
+        image: eclipse-mosquitto:2.0
+        ports:
+            - "1883:1883"
+        networks:
+            - mqtt-broker_net
     grpc-server:
         image: "diffie-hellman-server:1.0.0__linux_amd64"
         # environment:
@@ -12,11 +18,14 @@ services:
                 limits:
                     cpus: '0.1'
                     memory: 50M
+        depends_on:
+            - mqtt-broker
         networks:
             - mqtt-broker_net
     grpc-client:
         image: "diffie-hellman-client:1.0.0__linux_amd64"
         depends_on:
+            - mqtt-broker
             - "grpc-server"
         deploy:
             resources:
